@@ -26,7 +26,29 @@
 <body data-mwf-application="MyApplication" class="mwf-loading-app">
 
 <!-- TODO-REPEATED: add new views here -->
-<div class="mwf-view mwf-view-initial" data-mwf-viewcontroller="MyInitialViewController">
+<div class="mwf-view mwf-view-initial" data-mwf-viewcontroller="ListViewViewController">
+    <header>
+        <button class="mwf-imgbutton mwf-left-align mwf-img-sandwich"></button>
+        <h1 class="mwf-left-align">Medienliste</h1>
+        <button class="mwf-imgbutton mwf-right-align mwf-img-plus"></button>
+        <button class="mwf-imgbutton mwf-img-delete mwf-right-align"></button>
+    </header>
+    <main class="mwf-scrollview">
+        <ul class="mwf-listview" data-mwf-listitem-view="myapp-list-item">
+            <li class="mwf-listitem mwf-li-title-subtitle mwf-template" data-mwf-templatename="myapp-list-item">
+                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F1-bksv.de%2Fwp-content%2Fuploads%2F2026%2F02%2F7ea20dff-146d-44f8-bbe3-6995d11d1a66-scaled.jpg&f=1&nofb=1&ipt=d37bee5ff29b6d6a6367552a0f75b1a3802528e56eb5ff0a682e9fb8f84cd577&ipo=images" class="mwf-left-align"/>
+                <div class="mwf-left-align mwf-li-titleblock">
+                    <h2>Guter Tag</h2>
+                    <h3>Louis Enrico Dommsch
+                    </h3>
+                </div>
+                <button class="mwf-imgbutton mwf-img-options-vertical mwf-right-align"></button>
+            </li>
+        </ul>
+    </main>
+    <footer>
+        <button class="mwf-imgbutton mwf-img-refresh mwf-right-align"></button>
+    </footer>
 </div>
 
 </body>

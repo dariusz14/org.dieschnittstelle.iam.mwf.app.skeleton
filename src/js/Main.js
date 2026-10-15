@@ -13,16 +13,18 @@ import * as entities from "./model/MyEntities.js";
 /* application libraries: view controllers */
 import MyInitialViewController from "./controller/MyInitialViewController.js";
 // TODO-REPEATED: import any further view controllers here
+import ListViewViewController from "./controller/ListViewViewController.js";
 
 // we export the framework modules required by the application and the application modules required by the framework
 mwf.app.components = {
-    /* we need to provide the generic view controller as part of the classes that will be dynamically instantiated by the framework */
-    GenericDialogTemplateViewController,
-    /* application modules */
-    MyApplication,
-    MyInitialViewController
-    // TODO-REPEATED: export any further view controllers here
-}
+	/* we need to provide the generic view controller as part of the classes that will be dynamically instantiated by the framework */
+	GenericDialogTemplateViewController,
+	/* application modules */
+	MyApplication,
+	MyInitialViewController,
+	// TODO-REPEATED: export any further view controllers here
+	ListViewViewController,
+};
 
 // then start the application
 window.onload = () => {

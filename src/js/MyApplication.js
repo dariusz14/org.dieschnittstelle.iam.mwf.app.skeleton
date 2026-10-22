@@ -8,37 +8,36 @@ import {GenericCRUDImplRemote} from "vfh-iam-mwf-base";
 import * as entities from "./model/MyEntities.js";
 
 class MyApplication extends mwf.Application {
+	constructor() {
+		super();
+	}
 
-    constructor() {
-        super();
-    }
+	async oncreate() {
+		console.log("MyApplication.oncreate(): calling supertype oncreate");
 
-    async oncreate() {
-        console.log("MyApplication.oncreate(): calling supertype oncreate");
+		// first call the supertype method and pass a callback
+		await super.oncreate();
 
-        // first call the supertype method and pass a callback
-        await super.oncreate();
+		console.log("MyApplication.oncreate(): initialising local database");
+		// initialise the local database
+		// TODO-REPEATED: add new entity types to the array of object store names
+		//await GenericCRUDImplLocal.initialiseDB("mwftutdb", 1, ["MyEntity"]);
+		await GenericCRUDImplLocal.initialiseDB("mwftutdb", 2, ["MediaItem"]);
 
-        console.log("MyApplication.oncreate(): initialising local database");
-        // initialise the local database
-        // TODO-REPEATED: add new entity types to the array of object store names
-        await GenericCRUDImplLocal.initialiseDB("mwftutdb", 1, ["MyEntity"]);
+		console.log("MyApplication.oncreate(): local database initialised");
 
-        console.log("MyApplication.oncreate(): local database initialised");
+		//// TODO-REPEATED: if entity manager is used, register entities and crud operations for the entity types
+		//this.registerEntity("MediaItem", entities.MediaItem, true);
+		//this.registerCRUD("MediaItem", this.CRUDOPS.LOCAL, GenericCRUDImplLocal.newInstance("MediaItem"));
+		//this.registerCRUD("MediaItem", this.CRUDOPS.REMOTE, GenericCRUDImplRemote.newInstance("MediaItem"));
 
-        //// TODO-REPEATED: if entity manager is used, register entities and crud operations for the entity types
-        //this.registerEntity("MyEntity", entities.MyEntity, true);
-        //this.registerCRUD("MyEntity", this.CRUDOPS.LOCAL, GenericCRUDImplLocal.newInstance("MyEntity"));
-        //this.registerCRUD("MyEntity", this.CRUDOPS.REMOTE, GenericCRUDImplRemote.newInstance("MyEntity"));
+		// TODO: do any further application specific initialisations here
 
-        // TODO: do any further application specific initialisations here
-
-        // THIS MUST NOT BE FORGOTTEN: initialise the entity manager!
-        EntityManager.initialise();
-    };
+		// THIS MUST NOT BE FORGOTTEN: initialise the entity manager!
+		EntityManager.initialise();
+	}
 }
 
 const application = new MyApplication();
 export {application as default}
-
 

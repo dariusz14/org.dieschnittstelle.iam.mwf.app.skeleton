@@ -15,7 +15,7 @@ export default class ListViewViewController extends mwf.ViewController {
 	constructor() {
 		super();
 
-		this.crudops = GenericCRUDImplLocal.newInstance("MediaItem");
+		// this.crudops = GenericCRUDImplLocal.newInstance("MediaItem");
 
 		// this.items = new Array(10).fill(null).map(() => entities.createRandomMediaItem());
 		// console.log("ListViewViewController() items: ", this.items);
@@ -40,16 +40,24 @@ export default class ListViewViewController extends mwf.ViewController {
 	async oncreate() {
 		this.root.querySelector("header .mwf-img-plus").onclick = () => {
 			const newItem = entities.createRandomMediaItem();
-			this.crudops.create(newItem).then((createdItem) => {
-				this.addToListview(createdItem);
+			newItem.create().then(() => {
+				this.addToListview(newItem);
 			});
 			// this.addToListview(newItem);
 		};
-		this.crudops.readAll().then((items) => {
+		entities.MediaItem.readAll().then((items) => {
 			this.items = items;
 			this.initialiseListview(this.items);
 		});
 		// this.initialiseListview(this.items);
+	}
+
+	async onresume() {
+		super.onresume();
+		entities.MediaItem.readAll().then((items) => {
+			this.items = items;
+			this.initialiseListview(this.items);
+		});
 	}
 
 	/*
@@ -79,10 +87,11 @@ export default class ListViewViewController extends mwf.ViewController {
 	 * for views with listviews: react to the selection of a listitem
 	 * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
 	 */
-	onListItemSelected(itemobj, listviewid) {
-		// TODO: implement how selection of itemobj shall be handled
-		alert("Selected item: " + itemobj.title + " with ID " + itemobj._id);
-	}
+	// onListItemSelected(itemobj, listviewid) {
+	// 	// TODO: implement how selection of itemobj shall be handled
+	// 	// alert("Selected item: " + itemobj.title + " with ID " + itemobj._id);
+	// 	this.nextView("myapp-mediaReadview", { item: itemobj });
+	// }
 
 	/*
 	 * for views with listviews: react to the selection of a listitem menu option
@@ -110,13 +119,13 @@ export default class ListViewViewController extends mwf.ViewController {
 
 	editItem(item) {
 		item.title += " " + item.title;
-		this.crudops.update(item._id, item).then(() => {
+		item.update().then(() => {
 			this.updateInListview(item._id, item);
 		});
 	}
 
 	deleteItem(item) {
-		this.crudops.delete(item._id).then(() => {
+		item.delete().then(() => {
 			this.removeFromListview(item._id);
 		});
 	}

@@ -34,6 +34,10 @@ export class MediaItem extends EntityManager.Entity {
 		this.src = src;
 		this.description = description;
 	}
+
+	get addedPP() {
+		return new Date(this.added || new Date().now()).toLocaleDateString("de-DE");
+	}
 }
 
 export function createRandomMediaItem() {

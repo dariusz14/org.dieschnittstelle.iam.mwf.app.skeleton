@@ -4,3 +4,25 @@
     width: 100%;
     height: auto;
 }
+
+#myapp-editDialogForm img {
+    max-height: 300px;
+    max-width: 400px;
+
+}
+
+#myapp-editDialogForm fieldset input{
+    margin: 0;
+}
+
+#myapp-editDialogFormFileInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+#myapp-editDialogForm fieldset label.mwf-imgbutton{
+    filter: invert(50%);
+}

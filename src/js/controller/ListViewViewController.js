@@ -5,6 +5,7 @@ import {mwf} from "vfh-iam-mwf-base";
 import {mwfUtils} from "vfh-iam-mwf-base";
 import * as entities from "../model/MyEntities.js";
 import { GenericCRUDImplLocal } from "vfh-iam-mwf-base";
+import { LocalFileSystemReferenceHandler } from "../model/LocalFileSystemReferenceHandler.js";
 
 export default class ListViewViewController extends mwf.ViewController {
 	// instance attributes set by mwf after instantiation
@@ -38,16 +39,47 @@ export default class ListViewViewController extends mwf.ViewController {
 	// }
 
 	async oncreate() {
+		this.filesystemHandler = await LocalFileSystemReferenceHandler.getInstance();
+
 		this.root.querySelector("header .mwf-img-plus").onclick = () => {
 			const newItem = entities.createRandomMediaItem();
-			newItem.create().then(() => {
-				this.addToListview(newItem);
+			// newItem.create().then(() => {
+			// 	this.addToListview(newItem);
+			// });
+			this.showDialog("myapp-editDialogTemplate", {
+				item: newItem,
+				actionBindings: {
+					saveItem: async (evt) => {
+						evt.original.preventDefault();
+						//alert("saving: " + newItem.title);
+						console.log("saving: " + newItem.title);
+						this.hideDialog();
+						if (newItem.imgFile) {
+							const fileRef =
+								await this.filesystemHandler.createLocalFileSystemReference(
+									newItem.imgFile,
+								);
+							newItem.persistentSrc = fileRef;
+							newItem.src = URL.createObjectURL(newItem.imgFile);
+							delete newItem.imgFile;
+						}
+						const item = await newItem.create();
+						this.addToListview(item);
+					},
+					cancelDialog: (evt) => {
+						evt.original.preventDefault();
+						alert("cancelling: " + newItem.title);
+						this.hideDialog();
+					},
+				},
 			});
 			// this.addToListview(newItem);
-		};
+		};;
 		entities.MediaItem.readAll().then((items) => {
-			this.items = items;
-			this.initialiseListview(this.items);
+			this.resolvePersistentImageSources(items).then(() => {
+				this.items = items;
+				this.initialiseListview(this.items);
+			});
 		});
 		// this.initialiseListview(this.items);
 	}
@@ -55,9 +87,24 @@ export default class ListViewViewController extends mwf.ViewController {
 	async onresume() {
 		super.onresume();
 		entities.MediaItem.readAll().then((items) => {
-			this.items = items;
-			this.initialiseListview(this.items);
+			this.resolvePersistentImageSources(items).then(() => {
+				this.items = items;
+				this.initialiseListview(this.items);
+			});
 		});
+	}
+
+	async resolvePersistentImageSources(items) {
+		await Promise.all(
+			items.map(async (item) => {
+				if (item.persistentSrc) {
+					item.src =
+						await this.filesystemHandler.resolveLocalFileSystemReference(
+							item.persistentSrc,
+						);
+				}
+			}),
+		);
 	}
 
 	/*
@@ -118,9 +165,38 @@ export default class ListViewViewController extends mwf.ViewController {
 	}
 
 	editItem(item) {
-		item.title += " " + item.title;
-		item.update().then(() => {
-			this.updateInListview(item._id, item);
+		// item.title += " " + item.title;
+		// item.update().then(() => {
+		// 	this.updateInListview(item._id, item);
+		// });
+		this.showDialog("myapp-editDialogTemplate", {
+			item: item,
+			actionBindings: {
+				saveItem: async (evt) => {
+					evt.original.preventDefault();
+					//alert("saving: " + newItem.title);
+					console.log("saving: " + item.title);
+					this.hideDialog();
+					if (item.imgFile) {
+						const fileRef = await this.filesystemHandler.createLocalFileSystemReference(
+							item.imgFile,
+						);
+						item.persistentSrc = fileRef;
+						item.src =
+							await this.filesystemHandler.resolveLocalFileSystemReference(
+								fileRef,
+							);
+						delete item.imgFile;
+					}
+					await item.update();
+					this.updateInListview(item._id, item);
+				},
+				cancelDialog: (evt) => {
+					evt.original.preventDefault();
+					alert("cancelling: " + item.title);
+					this.hideDialog();
+				},
+			},
 		});
 	}
 

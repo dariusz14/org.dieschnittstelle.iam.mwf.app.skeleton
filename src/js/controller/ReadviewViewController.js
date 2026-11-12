@@ -25,8 +25,9 @@ export default class ReadviewViewController extends mwf.ViewController {
         const viewProxy = this.bindElement("myapp-mediaReadviewTemplate", {item: myItem}, this.root).viewProxy;
 
         viewProxy.bindAction("deleteItem", async () => {
-            await myItem.delete();
-            this.previousView();
+            await myItem.delete().then(() => {
+				this.previousView({ item: myItem }, "deleted");
+			});
         });
 
         // const myItem = new entities.MediaItem(
@@ -63,6 +64,12 @@ export default class ReadviewViewController extends mwf.ViewController {
      */
     async onReturnFromNextView(nextviewid, returnValue, returnStatus) {
         // TODO: check from which view, and possibly with which status, we are returning, and handle returnValue accordingly
+        if (nextviewid === "myapp-mediaReadview") {
+			if (returnStatus === "deleted") {
+				const deletedItem = returnValue?.item;
+				this.removeFromListview(deletedItem._id);
+			}
+		}
     }
 
     /*

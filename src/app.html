@@ -90,6 +90,28 @@ data-mwf-viewcontroller="ReadviewViewController">
     </header>
 </div>
 
+
+<div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" 
+    data-mwf-templatename="myapp-editDialogTemplate" 
+    data-mwf-viewcontroller="EditDialogViewController">
+    <main>
+        <h2>Erstellen/Editieren: {{item.title}}</h2>
+        <form on-submit="saveItem" id="myapp-editDialogForm">
+            <fieldset class="mwf-material">
+                <legend>Titel</legend>
+                <input value="{{item.title}}" class="mwf-autofocus" name="title" type="text" autocomplete="off" placeholder="{{item.title}}"/>
+                <input on-change="onImgFileSelected" type="file" id="myapp-editDialogFormFileInput"/>
+                <label for="myapp-editDialogFormFileInput" class="mwf-material-altinput mwf-imgbutton mwf-img-camera"></label>
+            </fieldset>
+            <img src="{{item.src}}"/>
+            <div class="mwf-buttonbar">
+                <button on-click="cancelDialog" type="button" class="mwf-button mwf-left-align">Abbrechen</button>
+                <input type="submit" class="mwf-button mwf-right-align mwf-button-prio" value="Speichern"/>
+            </div>
+        </form>
+    </main>
+</div>
+
 </body>
 
 </html>

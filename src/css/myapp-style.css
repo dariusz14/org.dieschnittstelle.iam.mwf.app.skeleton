@@ -15,14 +15,6 @@
     margin: 0;
 }
 
-#myapp-editDialogFormFileInput {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    overflow: hidden;
-}
-
-#myapp-editDialogForm fieldset label.mwf-imgbutton{
-    filter: invert(50%);
+#myapp-editDialogForm fieldset label.mwf-img-camera{
+    filter: invert(55%);
 }

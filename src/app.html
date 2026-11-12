@@ -100,7 +100,7 @@ data-mwf-viewcontroller="ReadviewViewController">
             <fieldset class="mwf-material">
                 <legend>Titel</legend>
                 <input value="{{item.title}}" class="mwf-autofocus" name="title" type="text" autocomplete="off" placeholder="{{item.title}}"/>
-                <input on-change="onImgFileSelected" type="file" id="myapp-editDialogFormFileInput"/>
+                <input class="mwf-material-altinput" on-change="onImgFileSelected" type="file" id="myapp-editDialogFormFileInput"/>
                 <label for="myapp-editDialogFormFileInput" class="mwf-material-altinput mwf-imgbutton mwf-img-camera"></label>
             </fieldset>
             <img src="{{item.src}}"/>

@@ -41,8 +41,14 @@ export class MediaItem extends EntityManager.Entity {
 }
 
 export function createRandomMediaItem() {
-	const titles = ["Arıyo", "Snap", "KTS", "Durma", "Intro", "Yaşanacaksa", "Zamansızdık"];
-	const descriptions = ["Manifest"];
+	const titles = [
+		"Good Morning",
+		"Stronger",
+		"Champion",
+		"Can't Tell Me Nothing",
+		"Flashing Lights",
+	];
+	const descriptions = ["Kanye West"];
 	const dims = [
 		[100, 100],
 		[50, 100],
@@ -55,7 +61,7 @@ export function createRandomMediaItem() {
 	const dim = dims[Math.floor(Math.random() * dims.length)];
 	const description = descriptions[Math.floor(Math.random() * descriptions.length)];
 	// const src = `https://picsum.photos/${dim[0]}/${dim[1]}`;
-	const src = "https://images.genius.com/38519c80c880dcd738bd3fde789abd40.1000x1000x1.png";
+	const src = "https://upload.wikimedia.org/wikipedia/en/7/70/Graduation_%28album%29.jpg";
 
 	return new MediaItem(title, src, description);
 }
